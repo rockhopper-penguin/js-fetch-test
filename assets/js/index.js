@@ -5,8 +5,11 @@ const apiCommunication = async () => {
   try {
     // ローディング表示
     isLoading(true);
-    // 非同期処理
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    // APIエンドポイント
+    const endpoint = `https://qiita.com/api/v2/users/rockhopper-penguin`;
+    // GETリクエスト送信
+    const result = await getRequest(endpoint);
+    console.log(result);
     isLoading(false);
   } catch (error) {
     // ローディング非表示
@@ -31,5 +34,24 @@ const isLoading = (showStatus) => {
     // ローディング非表示
     // displey noneのスタイルを適用する
     getMainElementModalDom.style.display = "none";
+  }
+};
+
+/**
+ * GETリクエスト
+ * @param string endpoint エンドポイント
+ */
+const getRequest = async (endpoint) => {
+  try {
+    // GETリクエスト
+    const res = await fetch(endpoint);
+    // 取得内容をJSONに変換して返す
+    return await res.json();
+  } catch (error) {
+    console.log(" ===== GETリクエストで例外発生 ===== ");
+    console.error(error);
+    console.log(" ================================ ");
+
+    throw new error(error);
   }
 };
